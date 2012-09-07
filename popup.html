@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <title>HN Filter</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background-color:#f6f6ef;
+      }
+      label {
+        display: block;
+      }
+      textarea {
+        font-family: monospace;
+      }
+      .message {
+        background: #F60;
+        text-align:center;
+        height:20px;
+        padding:2px 0px;
+      }
+      button.apply {
+        float:right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="message"></div>
+    <h3>HN Filter</h3>
+    <label>Filtered Terms:</label>
+
+    <textarea name="style_url" id="style_url" cols=40 rows=5
+        placeholder="Enter your comma delimited filters"></textarea>
+
+    <br/>
+    <button class="reset">Reset</button>
+    <button class="apply">Apply</button>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
