@@ -6,34 +6,34 @@ var resetButton = document.querySelector('button.reset');
 var applyButton = document.querySelector('button.apply');
 var textarea = document.querySelector('textarea');
 
-// Load any CSS that may have previously been saved.
+// Load any terms that may have previously been saved.
 loadChanges();
 
 resetButton.addEventListener('click', reset);
-applyButton.addEventListener('click', applyChanges);
+applyButton.addEventListener('click', saveChanges);
 
 function saveChanges() {
-  // Get the current CSS snippet from the form.
-  var cssCode = textarea.value;
+  // Get the current terms snippet from the form.
+  var termsCode = textarea.value;
   // Check that there's some code there.
-  if (!cssCode) {
-    setMessage('Error: No CSS specified');
+  if (!termsCode) {
+    setMessage('Error: No terms specified');
     return;
   }
   // Save it using the Chrome extension storage API.
-  storage.set({'css': cssCode}, function() {
+  storage.set({'terms': termsCode}, function() {
     // Notify that we saved.
     setMessage('Settings saved');
   });
 }
 
 function loadChanges() {
-  storage.get('css', function(items) {
-    // To avoid checking items.css we could specify storage.get({css: ''}) to
-    // return a default value of '' if there is no css value yet.
-    if (items.css) {
-      textarea.value = items.css;
-      setMessage('Loaded saved CSS.');
+  storage.get('terms', function(items) {
+    // To avoid checking items.terms we could specify storage.get({terms: ''}) to
+    // return a default value of '' if there is no terms value yet.
+    if (items.terms) {
+      textarea.value = items.terms;
+      setMessage('Loaded saved terms.');
     }
   });
 }
@@ -41,30 +41,11 @@ function loadChanges() {
 function reset() {
   // Remove the saved value from storage. storage.clear would achieve the same
   // thing.
-  storage.remove('css', function(items) {
+  storage.remove('terms', function(items) {
     setMessage('Stored terms have been reset');
   });
   // Refresh the text area.
   textarea.value = '';
-}
-
-function applyChanges(){
-  saveChanges();
-  // Check if there is CSS specified.
-  storage.get('css', function(items) {
-    console.log(items);
-    // If there is CSS specified, inject it into the page.
-    if (items.css) {
-      chrome.tabs.insertCSS(null, {code: items.css}, function() {
-        if (chrome.extension.lastError) {
-          message.innerText = 'Not allowed to inject CSS into special page.';
-        } else {
-          message.innerText = 'Injected style!';
-        }
-      });
-    } 
-  });
-
 }
 
 function setMessage(msg) {
@@ -74,3 +55,5 @@ function setMessage(msg) {
     message.innerText = '';
   }, 3000);
 }
+
+
